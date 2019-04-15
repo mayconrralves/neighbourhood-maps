@@ -5,21 +5,21 @@ import Map from './Map'
 
 class App extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       mapIsReady: false
-    };
+    }
   }
 
+   
   mapReady = ()=>{
     this.setState({mapIsReady: true})
   }
   render() {
-    console.log('aaaaa')
+     //alert("aaa"+ this.state.mapIsReady)
     return (
-      <div className="App">
-        <Map mapIsReady={this.state.mapIsReady} mapReady={this.mapReady}/>
-      </div>
+        <Map map={this.state.map} mapIsReady={this.state.mapIsReady} mapReady={this.mapReady}/>
+        
     );
   }
 }

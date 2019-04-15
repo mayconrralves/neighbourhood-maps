@@ -1,35 +1,71 @@
 import React, { Component } from 'react';
 import axios from 'axios'
+import Search from './Search'
 import roma from './roma.json'
-
 
 
 class Map extends Component {
 	constructor(props) {
-    super(props);
-    this.markers=[]
+    super(props)
+    this.markers = {}
   }
-	 teste = ()=> {
-    	this.marker.setVisible(!this.marker.getVisible())
-  		}
-  	  teste2 = ()=> {
-        console.log('aa')
-        //this.infowindow.open(this.map, this.marker);
-        //this.getWiki(this.infowindow, this.map, this.marker)
+	 
+
+  	getWiki = (local) => {
+      const endPoint = "https://en.wikipedia.org/w/api.php?"
+      const parameters = {
+          action: "opensearch",
+          origin: "*",
+          search: local,
+          limit: 1,
+          namespace: 0,
+          format: 'json',
+          prop:"extracts"
+      }
+        const url2 = new URLSearchParams(parameters)
+        let information=''
+        console.log(url2)
+        axios.get(endPoint+url2)
+          .then(response => {
+            if(response.data[2][0]){
+              information = response.data[2][0]
+            }
+            else{
+              information = 'No Information'
+            }
+              if(this.infowindow){
+              this.infowindow.close()
+            }
+              this.infowindow = new window.google.maps.InfoWindow({
+                       content: information
+                     })
+            this.infowindow.open(this.map, this.markers[local])
+          })
+          .catch(error=>{
+            alert('A api da wikipedia nao pode ser carregada')
+          })
+  }
+
+  toogleVisibleMarker = (marker)=> {
+      this.marker.setVisible(!this.marker.getVisible())
       }
 
 
 	componentDidMount() {
-	    const ApiKey = 'AIzaSyCm5liffecCZfRtAinGK-9m2jNkcpcLzUc&v';
-	    const script = document.createElement('script');
-	    script.src = `https://maps.googleapis.com/maps/api/js?v=3&key=${ApiKey}`;
-	    script.async = true;
-	    script.defer = true;
+	    const ApiKey = 'AIzaSyCm5liffecCZfRtAinGK-9m2jNkcpcLzUc&v'
+	    const script = document.createElement('script')
+	    script.src = `https://maps.googleapis.com/maps/api/js?v=3&key=${ApiKey}`
+	    script.async = true
+	    script.defer = true
+      script.onerror = ()=>{alert("ERRO, Não foi possível carregar a API do Google Maps")}
 	    script.addEventListener('load', () => {
-	      this.props.mapReady();
-	    });
+	      this.props.mapReady()
+	    })
 
-    document.body.appendChild(script);
+
+   
+    document.body.appendChild(script)
+
   }
 
   componentDidUpdate() {
@@ -41,9 +77,8 @@ class Map extends Component {
       this.map = new window.google.maps.Map(document.getElementById('map'), {
         center: {lat: spanishSteps.lat, lng: spanishSteps.lng},
           zoom: 13
-      });
-      
-      // You also can add markers on the map below
+      })
+            
       for(const local in roma){
 	      	console.log(roma[local])
 	      	let marker = new window.google.maps.Marker({
@@ -51,27 +86,37 @@ class Map extends Component {
 	          map: this.map,
 	          animation: window.google.maps.Animation.DROP,
 	          title: local
-	        });
+	        })
 
 	      marker.addListener('click', ()=> {
-	        console.log('okkkk',marker.title)
-	        //this.infowindow.open(this.map, this.marker);
-	        //this.getWiki(this.infowindow, this.map, this.marker)
-	      });
-	      this.markers.push(marker)
+	        console.log(marker.title)
+	        this.getWiki(local)
+
+          this.markers[local].setAnimation(window.google.maps.Animation.BOUNCE)
+          this.markers[local].setAnimation(null)
+           
+	      })
+	      this.markers[local] = marker
 	  }
       
 
     }
+    else{
+      alert('ERRO ao carregar')
+    }
   }
    render() {
+
     return (
-      <div>
+      <div className="App container">
+        <div className="row">
+        <Search roma={roma} mapIsReady={this.props.mapIsReady} getWiki={this.getWiki}/>
+      <div className="app-map col-10">
         <div id="map" style={{width: 800, height: 800}} />
-        <button onClick={this.teste}>Sumir</button>
-        <button onClick={this.teste2}>Open</button>
       </div>
-    );
+      </div>
+      </div>
+    )
   }
 }
 

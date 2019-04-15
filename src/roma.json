@@ -3,9 +3,8 @@
 	"Hadrian's Villa": { "lat":41.942802, "lng": 12.774399 },
 	"Circus Maximus": { "lat": 41.886131,  "lng": 12.485133 },
 	"Spanish Steps": { "lat": 41.905991,  "lng": 12.482775 },
-	"Pantheon": { "lat": 41.898609,  "lng": 12.476873 },
+	"Pantheon, Rome": { "lat": 41.898609,  "lng": 12.476873 },
 	"Trevi Fountain": { "lat":41.900932,  "lng": 12.483313 },
 	"Roman Forum": { "lat":41.892464,  "lng": 12.485325 },
-	"Coliseum, Rome": { "lat": 41.890209,  "lng": 12.492231 },
-	"The Colosseum of Rome":{ "lat": 41.890251,  "lng": 12.492373 }
+	"Colosseum": { "lat": 41.890209,  "lng": 12.492231 }
 }
