@@ -16,10 +16,8 @@ class App extends Component {
     this.setState({mapIsReady: true})
   }
   render() {
-     //alert("aaa"+ this.state.mapIsReady)
     return (
-        <Map map={this.state.map} mapIsReady={this.state.mapIsReady} mapReady={this.mapReady}/>
-        
+        <Map mapIsReady={this.state.mapIsReady} mapReady={this.mapReady}/>       
     );
   }
 }
