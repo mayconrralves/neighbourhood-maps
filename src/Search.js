@@ -29,7 +29,9 @@ class Search extends Component{
 	  	}
 	  	else{
 	  		if(this.state.prevSelection){
-	  			this.state.prevSelection.className='nav-link'
+	  			const selection = this.state.prevSelection
+	  			selection.className='nav-link' 
+	  			this.setState({prevSelection: selection})
 	  		}
 	  		event.target.className = 'nav-link active'
 	  		this.setState({active: false})
@@ -74,19 +76,19 @@ class Search extends Component{
 		}
 		return(
 				<nav className="app-search" aria-label="menu">
-					<a href="#" id='open' aria-label="open menu" onClick={this.openNav}>&#9776;</a>
+					<button className="menu-button" id='open' aria-label="open menu" onClick={this.openNav}>&#9776;</button>
 					<div id="mySidenav" className='sidenav'>
-						 <a href="#" aria-label="close menu" className="closebtn" onClick={this.closeNav} >&times;</a>
+						 <button aria-label="close menu" className="closebtn" onClick={this.closeNav} >&times;</button>
 						<form>
 							<Debounce time="300" handler="onChange">
 									<input aria-label="filter-results" id="search-input" type="Search" placeholder="Search" onChange={(event) => this.updateQuery(event.target.value)} />
 							</Debounce>
 					    </form>
-						<div className="nav flex-column nav-pills" id="v-pills-tab" aria-orientation="vertical">
+						<div tabIndex="0" aria-label="menu locations" className="nav flex-column nav-pills" id="v-pills-tab" aria-orientation="vertical">
 						{
 							showingLocals.map((local,i)=>(
 
-								<a tabindex="0" aria-label="location of rome" className='nav-link' id={'item'+i} key={'item'+i} 
+								<a href="#" aria-label={"location of rome: " + local} className='nav-link' id={'item'+i} key={'item'+i} 
 										onClick={(event)=>{
 															this.props.getWiki(local)
 															this.toggleClass(event)

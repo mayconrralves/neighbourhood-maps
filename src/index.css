@@ -32,6 +32,12 @@ form {
 	font-size: 30px;
 	cursor: pointer;
 }
+
+button {
+  outline: none;
+  background: #F0FFFF;
+  border-style: none;
+}
 .sidenav {
   height: 100%;
   width: 0;

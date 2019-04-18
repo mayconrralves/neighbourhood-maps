@@ -3,12 +3,13 @@ import axios from 'axios'
 import Search from './Search'
 import roma from './roma.json'
 
-
 class Map extends Component {
 	constructor(props) {
     super(props)
     this.markers = {}
+    this.prevLocal = ''
   }
+
     /*Conecta e recebe os dados da api da wikipedia*/
   	getWiki = (local) => {
       const endPoint = "https://en.wikipedia.org/w/api.php?"
@@ -33,19 +34,23 @@ class Map extends Component {
             }
             if(this.infowindow){
                 this.infowindow.close()
+                console.log('fechou')
+                this.markers[this.prevLocal].setIcon('')
               }
               this.infowindow = new window.google.maps.InfoWindow({
                        content: information
                      })
+            this.prevLocal= local
             this.markers[local].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
             this.infowindow.open(this.map, this.markers[local])
+            this.infowindow.addListener('closeclick', () =>{
+               this.markers[local].setIcon('')
+            })
             })
           .catch(error=>{
             alert('A api da wikipedia nao pode ser carregada')
-          })
-        
+          })       
   }
-
   removeVisibleMarker = (local)=>{
     if(this.markers[local]){
        this.markers[local].setVisible(false)
@@ -54,21 +59,17 @@ class Map extends Component {
   removeAnimationMarker = (local)=>{
       if(this.markers[local]){
          this.markers[local].setAnimation(-1)
-
       }
   }
    addAnimationMarker = (local)=>{
       if(this.markers[local]){
          this.markers[local].setAnimation(window.google.maps.Animation.BOUNCE)
-
       }
   }
   addVisibleMarker = (local)=>{
     if(this.markers[local]){
-       this.markers[local].setVisible(true)
-       
+       this.markers[local].setVisible(true)       
     }
-   
   }
   /*Inicializa o Google Maps,adicionado uma tag script assincrona*/
 	componentDidMount() {
@@ -81,11 +82,7 @@ class Map extends Component {
 	    script.addEventListener('load', () => {
 	      this.props.mapReady()
 	    })
-
-
-   
     document.body.appendChild(script)
-
   }
 
   /*Adiciona e mostra os marcadores quando é iniciada a aplicação*/
@@ -97,13 +94,10 @@ class Map extends Component {
             animation: window.google.maps.Animation.DROP,
             title: local
           })
-
         marker.addListener('click', ()=> {
           console.log(marker.title)
           this.getWiki(local)
-
           this.markers[local].setAnimation(-1)
-           
         })
         this.markers[local] = marker
     })
@@ -118,11 +112,8 @@ class Map extends Component {
       this.map = new window.google.maps.Map(document.getElementById('map'), {
         center: {lat: spanishSteps.lat, lng: spanishSteps.lng},
           zoom: 13
-      })
-            
+      })      
      this.showMarkers( Object.keys(roma))
-      
-
     }
     else{
       alert('ERRO ao carregar')
@@ -133,7 +124,7 @@ class Map extends Component {
     return (
       <main className="App container">
           <h1>ROMA, a Cidade Eterna</h1>
-          <section className="row" role="application" aria-label="Map of Rome">
+          <section className="row">
               <Search roma={roma} 
                       mapIsReady={this.props.mapIsReady}  
                       removeVisibleMarker={this.removeVisibleMarker}
@@ -143,7 +134,7 @@ class Map extends Component {
                       showMarkers={this.showMarkers} 
                       getWiki={this.getWiki}
               />
-            <div className="app-map col-md-12">
+            <div className="app-map col-md-12" role="application" aria-label="Map of Rome">
               <div id="map"/>
             </div>
          </section>

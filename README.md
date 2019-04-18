@@ -1,10 +1,12 @@
 # Projeto5: Neighbourhood Map - Roma 
 
-Este é o quinto projeto do Curso de Front-end avançado, pela udacity.
+Este é o quinto projeto do Curso de Front-end avançado, pela Udacity.
 
 Esta aplicação mapeia uma região e sua vizinhança, fornecendo informações de importantes locais de grande interesse histórico.
 
-Este projeto usa o React paraa renderizar a aplicação e as APIs Google Maps e Wikipedia, para respectivamente obter um mapa da cidade de Roma, adicionando os marcadores de locais e uma informação  sobre o local
+Este projeto usa o React para renderizar a aplicação e as APIs Google Maps e Wikipedia, para respectivamente obter um mapa da cidade de Roma, adicionando os marcadores de locais e uma informação  sobre o local.
+
+Também utiliza o Boostrap para deixar a página rsponsiva.
 
 ## Dependências
 
